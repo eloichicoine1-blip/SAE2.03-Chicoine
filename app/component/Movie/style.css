@@ -1,0 +1,22 @@
+.movielist{
+display: grid;
+justify-items: center;
+align-content: center;
+grid-template-columns: repeat(auto-fit, minmax(13rem,1fr));
+gap:2rem ;
+padding: 1rem;
+
+}
+
+.movie{
+    max-width: 10rem;
+}
+
+.movie_cover{
+width :10rem;
+height: 15rem;
+}
+
+.movie_title{
+
+}

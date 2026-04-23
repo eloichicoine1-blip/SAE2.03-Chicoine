@@ -5,3 +5,5 @@
 @import "./utilities.css" layer(utilities);
 
 @import "../component/Log/style.css" layer(components);
+@import "../component/FormAdd/style.css" layer(components);
+

@@ -1,18 +1,6 @@
 <?php
-/**
- * Ce fichier contient toutes les fonctions qui réalisent des opérations
- * sur la base de données, telles que les requêtes SQL pour insérer, 
- * mettre à jour, supprimer ou récupérer des données.
- */
 
-/**
- * Définition des constantes de connexion à la base de données.
- *
- * HOST : Nom d'hôte du serveur de base de données, ici "localhost".
- * DBNAME : Nom de la base de données
- * DBLOGIN : Nom d'utilisateur pour se connecter à la base de données.
- * DBPWD : Mot de passe pour se connecter à la base de données.
- */
+ 
 define("HOST", "localhost");
 define("DBNAME", "chicoine3");
 define("DBLOGIN", "chicoine3");
@@ -20,15 +8,33 @@ define("DBPWD", "chicoine3");
 
 
 function getAllMovies(){
-    // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    // Requête SQL pour récupérer le menu avec des paramètres
-    $sql = "select id, name, image from Movie";
-    // Prépare la requête SQL
+    $sql = "select id, name image from Movie";
     $stmt = $cnx->prepare($sql);
-    // Exécute la requête SQL
     $stmt->execute();
-    // Récupère les résultats de la requête sous forme d'objets
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
-    return $res; // Retourne les résultats
+    return $res; 
+}
+
+
+
+function AddMovie($t, $r, $a, $d, $desc, $c,$n,$rest){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD); 
+    $sql = "INSERT INTO Movie (name, director, year, length, description, id_category, image, min_age, trailer) 
+            VALUES (:t, :r, :a, :d, :desc,:c, :n, :rest, :trail)";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':t', $t);
+    $stmt->bindParam(':r', $r);
+    $stmt->bindParam(':a', $a);
+    $stmt->bindParam(':d', $d);
+    $stmt->bindParam(':desc', $desc);
+    $stmt->bindParam(':c', $c);
+    $stmt->bindParam(':n', $n);
+    $stmt->bindParam(':rest', $rest);
+        $stmt->bindParam(':trail', $trail);
+
+
+    $stmt->execute();
+    $res = $stmt->rowCount(); 
+    return $res; 
 }
