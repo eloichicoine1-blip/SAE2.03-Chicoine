@@ -18,14 +18,17 @@ function addMoviesController() {
     $categorie = $_REQUEST['categorie'];
     $nomfilm = $_REQUEST['nomfilm'];
     $restrictionage = $_REQUEST['restrictionage'];
+    $trailer = $_REQUEST['trailer'];
 
-    $resultat = addMovie($titre, $realisateur, $annee, $duree, $description, $categorie, $nomfilm, $restrictionage);
+
+    $resultat = addMovie($titre, $realisateur, $annee, $duree, $description, $categorie, $nomfilm, $restrictionage, $trailer);
     
-    if ($resultat) {
-        return ["status" => "success", "message" => "Le film '$titre' a été ajouté avec succès."];
-    } else {
-        return ["status" => "error", "message" => "Erreur lors de l'ajout dans la base de données."];
-    }
+   if ($resultat!=0){
+    return "Le film $titre a été ajouté";
+  }
+  else{
+    return false;
+  }
 }
 
 function readMoviesController(){

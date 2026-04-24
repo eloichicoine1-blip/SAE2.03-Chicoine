@@ -18,12 +18,13 @@
       window.C = {};
 
       C.handlerAddMovie = async function() {
-    let formElement = document.querySelector('.addMovie__form');
-    
-    let formData = new FormData(formElement);
-    
-  let res = await DataMovie.add(formData);
-            V.renderLog(res);
+      let formElement = document.querySelector('.addMovie__form');
+      if (formElement.reportValidity()){
+      let formData = new FormData(formElement);
+      let res = await DataMovie.add(formData);
+      V.renderLog(res);
+
+    }
 }
 
       C.start = function () {

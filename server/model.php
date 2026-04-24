@@ -9,7 +9,7 @@ define("DBPWD", "chicoine3");
 
 function getAllMovies(){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "select id, name image from Movie";
+    $sql = "select id, name, image from Movie";
     $stmt = $cnx->prepare($sql);
     $stmt->execute();
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -18,7 +18,7 @@ function getAllMovies(){
 
 
 
-function AddMovie($t, $r, $a, $d, $desc, $c,$n,$rest){
+function AddMovie($t, $r, $a, $d, $desc, $c,$n,$rest, $trail){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD); 
     $sql = "INSERT INTO Movie (name, director, year, length, description, id_category, image, min_age, trailer) 
             VALUES (:t, :r, :a, :d, :desc,:c, :n, :rest, :trail)";
@@ -31,7 +31,7 @@ function AddMovie($t, $r, $a, $d, $desc, $c,$n,$rest){
     $stmt->bindParam(':c', $c);
     $stmt->bindParam(':n', $n);
     $stmt->bindParam(':rest', $rest);
-        $stmt->bindParam(':trail', $trail);
+    $stmt->bindParam(':trail', $trail);
 
 
     $stmt->execute();

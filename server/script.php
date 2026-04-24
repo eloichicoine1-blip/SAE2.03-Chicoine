@@ -4,13 +4,8 @@ error_reporting(E_ALL);
 
 require("controller.php");
 
-
 if ( isset($_REQUEST['todo']) ){
-
-  
   header('Content-Type: application/json');
-
-  
   $todo = $_REQUEST['todo'];
 
   switch($todo){
