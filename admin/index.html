@@ -1,51 +1,77 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <title>SAE2.03 ADMIN</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/base.css" />
-  </head>
-  <body>
-    <section id="log"></section>
-    <section id="formadd"></section>
-    
-    <script type="module">
-      import { Log } from "./component/Log/script.js";
-      import { DataMovie } from "./data/dataMovie.js";
-      import { FormAdd } from "./component/FormAdd/script.js";
 
-      window.C = {};
+<head>
+  <title>SAE2.03 ADMIN</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/base.css" />
+</head>
 
-      C.handlerAddMovie = async function() {
+<body>
+  <section id="log"></section>
+  <section id="formadd"></section>
+    <section id="profileadd"></section>
+
+
+  <script type="module">
+    import { Log } from "./component/Log/script.js";
+    import { DataMovie } from "./data/dataMovie.js";
+    import { FormAdd } from "./component/FormAdd/script.js";
+    import { DataProfile } from "./data/dataProfile.js";
+    import { ProfileForm } from "./component/ProfileForm/script.js";
+
+    let moviedata = await DataMovie.requestCategories();
+    window.C = {};
+
+    C.handlerAddMovie = async function () {
       let formElement = document.querySelector('.addMovie__form');
-      if (formElement.reportValidity()){
-      let formData = new FormData(formElement);
-      let res = await DataMovie.add(formData);
-      V.renderLog(res);
 
+      if (formElement.reportValidity()) {
+        let formData = new FormData(formElement);
+        await DataMovie.add(formData);
+        V.renderLog("Film ajouté avec succès !");
+        formElement.reset();
+      }
+    };
+
+    C.handlerAddProfile = async function() {
+    let formElement = document.querySelector('.addProfile_form');
+
+    if (formElement.reportValidity()) {
+        let formData = new FormData(formElement);
+        let reponse = await DataProfile.add(formData);
+        V.renderLog(reponse);     
+        formElement.reset();
     }
-}
+};
 
-      C.start = function () {
-        V.renderLog("Démarrage de l'application");
-        V.renderFormAdd("C.handlerAddMovie()");
 
-      };
+    C.start = async function () {
+      V.renderLog("Démarrage de l'application");
+      V.renderFormAdd(moviedata, "C.handlerAddMovie()");
+      V.renderProfileForm("C.handlerAddProfile()");
+    };
 
-      window.V = {};
+    window.V = {};
 
-      V.renderLog = function (txt) {
-        let content = document.querySelector("#log");
-        content.innerHTML = Log.format(txt);
-      };
+    V.renderLog = function (txt) {
+      let content = document.querySelector("#log");
+      content.innerHTML = Log.format(txt);
+    };
 
-      V.renderFormAdd = function (data) {
-        let content = document.querySelector("#formadd");
-        content.innerHTML = FormAdd.format(data);
-      };
+    V.renderFormAdd = function (data, handler) {
+      let content = document.querySelector("#formadd");
+      content.innerHTML = FormAdd.format(data, handler);
+    };
 
-      C.start();
-    </script>
-  </body>
+    V.renderProfileForm = function (handler) {
+    let content = document.querySelector("#profileadd"); 
+    content.innerHTML = ProfileForm.format(handler);
+};
+
+    C.start();
+  </script>
+</body>
+
 </html>

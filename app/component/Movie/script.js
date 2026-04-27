@@ -18,6 +18,7 @@ Movie.format = function (data) {
            let li = templateLi;
            li = li.replaceAll("{{Img}}", "../server/images/" + menu.image);
            li = li.replaceAll("{{Title}}", menu.name);
+           li = li.replaceAll("{{Id}}", menu.id);
            
            menuHTML += li;
     
@@ -26,11 +27,6 @@ Movie.format = function (data) {
        return html;
 
    }
-
-   
-
-
 };
-
 
 export { Movie };

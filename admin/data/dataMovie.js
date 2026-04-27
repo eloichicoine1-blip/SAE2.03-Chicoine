@@ -3,11 +3,11 @@ let HOST_URL = "..";
 let DataMovie = {};
 
 
-DataMovie.request = async function (Data) {
+/*DataMovie.request = async function (Data) {
     let answer = await fetch(HOST_URL + "/server/script.php?jour=" + Data);
     let data = await answer.json();
     return data;
-}
+}*/
 DataMovie.add = async function (fdata) {
     let config = {
         method: "POST",
@@ -16,7 +16,14 @@ DataMovie.add = async function (fdata) {
     let answer = await fetch(HOST_URL + "/server/script.php?todo=addmovies", config);
     let data = await answer.json();
     return data;
-}
+}; 
+
+DataMovie.requestCategories = async function () {
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=readcategories");
+    let data = await answer.json();
+    console.log(data)
+    return data;
+};
 export { DataMovie };
 
 

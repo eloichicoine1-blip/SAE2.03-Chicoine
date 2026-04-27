@@ -1,0 +1,18 @@
+<section class="addProfile">
+    <h4>Ajouter un profil utilisateur</h4>
+    <form class="addProfile__form">
+        <input required type="text" name="nom" placeholder="Nom du profil">
+        
+        <input type="text" name="avatar" placeholder="Nom de l'avatar (ex: jean.png) - Facultatif">
+        
+        <select name="age">
+            <option value="0">Tous publics</option>
+            <option value="10">Déconseillé aux -10 ans</option>
+            <option value="12">Interdit aux -12 ans</option>
+            <option value="16">Interdit aux -16 ans</option>
+            <option value="18">Interdit aux -18 ans</option>
+        </select>
+        
+        <button type="button" onclick="{{handler}}">Ajouter le profil</button>
+    </form>
+</section>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <title>SAE2.03 APP</title>
@@ -16,37 +16,33 @@
       import { NavBar } from "./component/NavBar/script.js";
       import { Movie } from "./component/Movie/script.js";
       import { DataMovie } from "./data/dataMovie.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
+      import { MovieCategory } from "./component/MovieCategory/script.js";
+
 
 
       let moviedata = await DataMovie.requestMovies();
 
-
-      // Controleur
-      // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
-      // Une fois l'application terminée, on pourrait remettre let C.
       window.C = {};
 
       C.handlerAbout = function () {
         alert(
-          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !"
+          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
         );
+      };
+
+      C.handlerDetail = async function (id) {
+        let movie = await DataMovie.requestMovieDetails(id);
+        V.renderMovieDetail(movie);
       };
 
       C.start = function () {
         V.renderNavBar("C.handlerAbout()");
-         V.renderMovie(moviedata);
+        V.renderMovie(moviedata);
       };
 
-      // Vue (contient tout ce qui est relatif à l'affichage)
       window.V = {};
 
-      /**
-       * V.renderNavBar
-       *
-       * Cette fonction est responsable de l'affichage de la barre de navigation (NavBar).
-       * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
-       * formaté par le composant NavBar.
-       */
       V.renderNavBar = function (hAbout) {
         let header = document.querySelector("#header");
         header.innerHTML = NavBar.format(hAbout);
@@ -54,10 +50,21 @@
 
       V.renderMovie = function (data) {
         let content = document.querySelector("#content");
-        content.innerHTML = Movie.format(data);
+        let finalHtml =  "";
+        for (let categoryName in data){
+          let categoryMovie = data[categoryName];
+          finalHtml += MovieCategory.format(categoryName, categoryMovie);
+        }
+
+        content.innerHTML = finalHtml;
       };
 
-      C.start(); // Démarre l'application
+      V.renderMovieDetail = function (data) {
+        let content = document.querySelector("#content");
+        content.innerHTML = MovieDetail.format(data);
+      };
+
+      C.start();
     </script>
   </body>
 </html>

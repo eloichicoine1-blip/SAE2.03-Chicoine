@@ -1,0 +1,60 @@
+.moviedetail {
+    max-width: 50rem;
+    margin: 2.5rem auto; 
+    padding: 1.5rem; 
+    
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--ff-sans);
+}
+
+.moviedetail__title {
+    font-size: 2.5rem; 
+    margin-bottom: 1.5rem;
+}
+
+.moviedetail__top {
+    display: flex;
+    gap: 2rem; 
+    margin-bottom: 2.5rem;
+}
+
+.moviedetail__poster {
+    width: 18rem; 
+    height: auto;
+    object-fit: contain;
+}
+
+
+.moviedetail__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1rem;
+}
+
+.moviedetail__info h3, 
+.moviedetail__media h3 {
+    font-size: 1.5rem; 
+    margin-bottom: 0.5rem;
+    color: var(--color-gray-light);
+}
+
+.moviedetail__info p {
+    line-height: 1.5;
+}
+
+.moviedetail__video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    background-color: var(--color-black);
+}
+
+.moviedetail__video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
