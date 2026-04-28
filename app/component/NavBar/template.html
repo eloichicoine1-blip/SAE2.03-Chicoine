@@ -1,5 +1,15 @@
 <nav class="navbar font-sans">
-  <ul class="navbar__list">
-    <li class="navbar__item"><a href="#" onclick="C.start();">Home</a></li>
-  </ul>
+    <ul class="navbar__list">
+        <li class="navbar__item"><a href="#" onclick="C.start();">Home</a></li>
+        
+        <li class="navbar__item"><a href="#" onclick="{{hLogout}}">Déconnexion</a></li>
+        
+        <li class="navbar__item">
+            <select id="profile_select">
+                <option value="">-- Choisir un profil --</option>
+                {{options_profils}}
+            </select>
+            <button onclick="{{hProfile}}">Choisir</button>
+        </li>
+    </ul>
 </nav>

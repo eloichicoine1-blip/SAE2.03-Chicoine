@@ -11,7 +11,7 @@
 <body>
   <section id="log"></section>
   <section id="formadd"></section>
-    <section id="profileadd"></section>
+  <section id="profileadd"></section>
 
 
   <script type="module">
@@ -35,16 +35,16 @@
       }
     };
 
-    C.handlerAddProfile = async function() {
-    let formElement = document.querySelector('.addProfile_form');
+    C.handlerAddProfile = async function () {
+      let formElement = document.querySelector('.addProfile__form');
 
-    if (formElement.reportValidity()) {
+      if (formElement.reportValidity()) {
         let formData = new FormData(formElement);
         let reponse = await DataProfile.add(formData);
-        V.renderLog(reponse);     
+        V.renderLog(reponse);
         formElement.reset();
-    }
-};
+      }
+    };
 
 
     C.start = async function () {
@@ -66,9 +66,9 @@
     };
 
     V.renderProfileForm = function (handler) {
-    let content = document.querySelector("#profileadd"); 
-    content.innerHTML = ProfileForm.format(handler);
-};
+      let content = document.querySelector("#profileadd");
+      content.innerHTML = ProfileForm.format(handler);
+    };
 
     C.start();
   </script>

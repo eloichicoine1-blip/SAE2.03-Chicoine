@@ -76,4 +76,13 @@ function addProfile($nom, $avatar, $age) {
     return $stmt->rowCount(); 
 }
 
+function getAllProfiles() {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT * FROM Profile";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
 

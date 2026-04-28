@@ -79,3 +79,7 @@ function addProfileController() {
     }
 };
 
+function readProfilesController() {
+    return getAllProfiles();
+}
+
