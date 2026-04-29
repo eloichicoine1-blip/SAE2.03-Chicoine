@@ -7,10 +7,15 @@ define("DBLOGIN", "chicoine3");
 define("DBPWD", "chicoine3");
 
 
-function getAllMovies(){
+function getAllMovies($min_age){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.id, Movie.image, Movie.name, Category.name AS category_nom FROM Movie, Category WHERE Movie.id_category = Category.id";
+    $sql = "SELECT Movie.id, Movie.name, Movie.image, Category.name AS category_name 
+            FROM Movie 
+            INNER JOIN Category ON Movie.id_category = Category.id
+            WHERE Movie.min_age <= :min_age
+            ORDER BY Category.name, Movie.name";
     $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':min_age', $min_age);
     $stmt->execute();
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
     return $res; 
@@ -78,7 +83,7 @@ function addProfile($nom, $avatar, $age) {
 
 function getAllProfiles() {
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT * FROM Profile";
+    $sql = "SELECT Profile.* FROM Profile";
     $stmt = $cnx->prepare($sql);
     $stmt->execute();
     

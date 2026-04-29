@@ -20,10 +20,9 @@
       import { MovieCategory } from "./component/MovieCategory/script.js";
       import { DataProfile } from "./data/dataProfile.js";
 
-
-
-      let moviedata = await DataMovie.requestMovies();
-
+      let profiles = await DataProfile.read();
+      let currentFilteredMovies = null;
+      content.innerHTML = "<h2 style='text-align:center; padding: 3rem;'>Veuillez sélectionner un profil pour découvrir le catalogue.</h2>";
       window.C = {};
 
       C.handlerAbout = function () {
@@ -37,88 +36,65 @@
         V.renderMovieDetail(movie);
       };
 
-     C.handlerSelectProfile = async function() {
-    // 1. On récupère l'ID du profil sélectionné
-    let select = document.querySelector('#profile_select');
-    window.activeProfileId = select.value;
-
-    // 2. On vérifie que ce n'est pas le choix vide "-- Choisir --"
-    if (window.activeProfileId != "") {
-        // La vraie magie : on relance simplement le chef d'orchestre !
-        // C.start va enlever la classe CSS et afficher les films automatiquement
-        C.start(); 
-    } else {
-        alert("Veuillez sélectionner un profil valide.");
-    }
-};
-
-C.handlerLogout = function() {
-    // 1. On oublie le profil actuel
-    window.activeProfileId = null;
-    
-    // 2. On relance C.start() pour revenir au menu de sélection
-    C.start();
-    
-    V.renderLog("Déconnexion réussie.");
-};
-
-      C.start = async function () {
-    // 1. On charge toujours la barre de navigation
-    let profiles = await DataProfile.read();
-    V.renderNavBar("C.handlerAbout()", profiles, "C.handlerSelectProfile()", "C.handlerLogout()");
-    
-    // 2. Le carrefour intelligent !
-    if (window.activeProfileId) {
-        // CAS A : Un profil est déjà sélectionné (L'utilisateur a cliqué sur Home)
-        // On va chercher les films et on les affiche direct !
-        let moviedata = await DataMovie.requestMovies();
-        V.renderMovie(moviedata);
-    } else {
-        // CAS B : Aucun profil n'est sélectionné (Démarrage ou Déconnexion)
-        document.querySelector("#content").innerHTML = "<h2>Veuillez choisir un profil pour voir les films</h2>";
-    }
-};
-
-      window.V = {};
-
-    V.renderNavBar = function (hAbout, profiles, hProfile, hLogout) {
-    let header = document.querySelector("#header");
-    header.innerHTML = NavBar.format(hAbout, profiles, hProfile, hLogout);
-
-    // On cible le corps de la page
-    let body = document.querySelector("body");
-
-    // L'interrupteur magique
-    if (window.activeProfileId) {
-        // --- MODE CONNECTÉ ---
-        body.classList.remove("mode-connexion"); // On enlève le mode plein écran
-        
-        // On remet le bon profil dans la liste visuellement
-        let select = document.querySelector('#profile_select');
-        if (select) select.value = window.activeProfileId;
-    } else {
-        // --- MODE CHOIX DE PROFIL ---
-        body.classList.add("mode-connexion"); // On active le mode plein écran !
-    }
-};
-
-      V.renderMovie = function (data) {
-        let content = document.querySelector("#content");
-        let finalHtml =  "";
-        for (let categoryName in data){
-          let categoryMovie = data[categoryName];
-          finalHtml += MovieCategory.format(categoryName, categoryMovie);
+     C.handlerSelectProfile = async function(idp) {
+        if (!idp) {
+            currentFilteredMovies = null; 
+            C.handlerHome(); 
         }
-
-        content.innerHTML = finalHtml;
+        let currentProfile = null;
+        for (let p of profiles) {
+        if (p.id == idp) {
+            currentProfile = p; 
+        }
+      }
+      currentFilteredMovies = await DataMovie.requestMovies(currentProfile.age_restriction);
+        
+      V.renderMovie(currentFilteredMovies);
       };
 
-      V.renderMovieDetail = function (data) {
+      C.handlerHome = function(){
+        let content = document.querySelector("#content");
+        if (currentFilteredMovies) {
+            V.renderMovie(currentFilteredMovies);
+        } 
+        else {
+            content.innerHTML = "<h2 style='text-align:center; padding: 3rem;'>Veuillez sélectionner un profil pour découvrir le catalogue.</h2>";
+        }      
+      }
+
+    C.handlerLogout = function() {
+        currentFilteredMovies = null; 
+        
+        C.handlerHome(); 
+    };
+
+    C.start = async function () {
+      V.renderNavBar("C.handlerHome()", profiles, "C.handlerLogout()");
+    };
+
+    window.V = {};
+
+    V.renderNavBar = function (hHome, profiles, hLogout) {
+      let header = document.querySelector("#header");
+      header.innerHTML = NavBar.format(hHome, profiles, hLogout);
+    };
+
+    V.renderMovie = function (data) {
+        let content = document.querySelector("#content");
+        let html = "";
+        for (let categoryObj of data) {
+            let moviesHtml = Movie.format(categoryObj.movies);
+            html += MovieCategory.format(categoryObj.label, moviesHtml);
+        }
+          content.innerHTML = html;
+    };
+
+    V.renderMovieDetail = function (data) {
         let content = document.querySelector("#content");
         content.innerHTML = MovieDetail.format(data);
-      };
+    };
 
-      C.start();
+    C.start();
     </script>
   </body>
 </html>

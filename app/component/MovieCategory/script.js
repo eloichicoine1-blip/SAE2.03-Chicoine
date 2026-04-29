@@ -7,8 +7,7 @@ let MovieCategory ={};
 MovieCategory.format = function(container, data){
     let html = template;
     html = html.replaceAll("{{name}}", container);
-    let htmllist = Movie.format(data);
-    html = html.replaceAll("{{list}}", htmllist);
+    html = html.replaceAll("{{list}}", data);
     return html;
 };
 

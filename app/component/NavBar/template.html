@@ -1,15 +1,14 @@
 <nav class="navbar font-sans">
     <ul class="navbar__list">
-        <li class="navbar__item"><a href="#" onclick="C.start();">Home</a></li>
-        
+        <li class="navbar__item"><a href="#" onclick="{{hHome}}">Home</a></li>
+
         <li class="navbar__item"><a href="#" onclick="{{hLogout}}">Déconnexion</a></li>
-        
+
         <li class="navbar__item">
-            <select id="profile_select">
+            <select id="profile_select" onchange="C.handlerSelectProfile(this.value)"  >
                 <option value="">-- Choisir un profil --</option>
                 {{options_profils}}
             </select>
-            <button onclick="{{hProfile}}">Choisir</button>
         </li>
     </ul>
 </nav>

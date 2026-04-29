@@ -6,10 +6,10 @@ let templateLi = await templateLiFile.text();
 
 let NavBar = {};
 
-NavBar.format = function (hAbout, profiles, hProfile, hLogout) {
+NavBar.format = function (hHome, profiles, hLogout) {
     let html = template;
     
-    html = html.replaceAll("{{hAbout}}", hAbout);
+    html = html.replaceAll("{{hHome}}", hHome);
 
     let Options = "";
     for (let profil of profiles) {
@@ -20,7 +20,6 @@ NavBar.format = function (hAbout, profiles, hProfile, hLogout) {
     }
 
     html = html.replaceAll("{{options_profils}}", Options);
-    html = html.replaceAll("{{hProfile}}", hProfile);
     html = html.replaceAll("{{hLogout}}", hLogout);
 
     return html;

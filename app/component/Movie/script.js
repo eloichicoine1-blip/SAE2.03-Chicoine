@@ -8,11 +8,7 @@ let Movie = {};
 
 Movie.format = function (data) {
     let html = template;
-   if (data.length == 0) {
-    return html.replaceAll 
-        ("{{Movie}}", "<p class='movie_empty' >Aucun film pour le moment</p>");
-   }
-   else{
+
        let menuHTML = "";
        for (let menu of data) {
            let li = templateLi;
@@ -27,6 +23,6 @@ Movie.format = function (data) {
        return html;
 
    }
-};
+;
 
 export { Movie };

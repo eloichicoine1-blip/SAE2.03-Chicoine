@@ -1,4 +1,4 @@
-/* .navbar {
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -6,6 +6,12 @@
   color: var(--color-fg);
   background-color: var(--color-bg);
 
+.navbar__list{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+  
   .navbar__item {
     a{color: white;}
     --_offset: 0.2rem;
@@ -21,36 +27,5 @@
    
  
   };
-}; */
+};
 
-/* =========================================
-   DESIGN DU MODE "CHOIX DE PROFIL"
-   ========================================= */
-
-/* On transforme le header pour qu'il prenne tout l'écran */
-body.mode-connexion #header {
-    height: 80vh; /* Prend presque tout l'écran */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* On change l'affichage de la liste pour empiler et centrer */
-body.mode-connexion .navbar__list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    transform: scale(1.5); /* On grossit tout ! */
-}
-
-/* On CACHE le bouton "Home" et "Déconnexion" car ils ne servent à rien ici */
-body.mode-connexion .navbar__item:nth-child(1),
-body.mode-connexion .navbar__item:nth-child(2) {
-    display: none; 
-}
-
-/* On cache aussi le message "Veuillez choisir un profil" du content puisqu'on a une belle interface */
-body.mode-connexion #content {
-    display: none;
-}

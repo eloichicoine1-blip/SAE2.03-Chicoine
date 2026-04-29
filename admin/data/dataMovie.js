@@ -3,11 +3,6 @@ let HOST_URL = "..";
 let DataMovie = {};
 
 
-/*DataMovie.request = async function (Data) {
-    let answer = await fetch(HOST_URL + "/server/script.php?jour=" + Data);
-    let data = await answer.json();
-    return data;
-}*/
 DataMovie.add = async function (fdata) {
     let config = {
         method: "POST",

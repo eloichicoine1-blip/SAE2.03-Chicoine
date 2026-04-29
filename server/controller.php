@@ -32,18 +32,25 @@ function readCategoriesController() {
     return getAllCategories();
 }
 
-function readMoviesController(){
-    $movies = getAllMovies();
-    $grp=[];
-    foreach($movies as $film){
-        $container = $film -> category_nom;
-        if(!isset($grp[$container])){
-            $grp[$container] = [];
+function readMoviesController() {
+    $age = $_REQUEST['age']; 
+    
+    $movies = getAllMovies($age);
+    $grouped = [];
+    foreach ($movies as $movie) {
+        $nameCat = $movie->category_name;
+        
+        if (!isset($grouped[$nameCat])) {
+            $grouped[$nameCat] = [
+                "label" => $nameCat,
+                "movies" => []
+            ];
         }
-        $grp[$container][] = $film;
+        $grouped[$nameCat]["movies"][] = $movie;
     }
-    return $grp;
-};
+      
+    return array_values($grouped);
+}
 
 function readMovieDetailController() {
     if (empty($_REQUEST['id'])) {
