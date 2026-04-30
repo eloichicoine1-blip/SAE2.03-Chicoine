@@ -4,7 +4,7 @@
 define("HOST", "localhost");
 define("DBNAME", "SAE203");
 define("DBLOGIN", "usersae203");
-define("DBPWD", "EloiPulse4321!");
+define("DBPWD", "usersae203");
 
 
 function getAllMovies($min_age){
