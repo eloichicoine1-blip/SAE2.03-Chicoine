@@ -14,64 +14,73 @@
   <section id="profileadd"></section>
 
 
-  <script type="module">
+ <script type="module">
     import { Log } from "./component/Log/script.js";
     import { DataMovie } from "./data/dataMovie.js";
     import { FormAdd } from "./component/FormAdd/script.js";
     import { DataProfile } from "./data/dataProfile.js";
     import { ProfileForm } from "./component/ProfileForm/script.js";
 
-    let moviedata = await DataMovie.requestCategories();
     window.C = {};
-
-    C.handlerAddMovie = async function () {
-      let formElement = document.querySelector('.addMovie__form');
-
-      if (formElement.reportValidity()) {
-        let formData = new FormData(formElement);
-        await DataMovie.add(formData);
-        V.renderLog("Film ajouté avec succès !");
-        formElement.reset();
-      }
-    };
-
-    C.handlerAddProfile = async function () {
-      let formElement = document.querySelector('.addProfile__form');
-
-      if (formElement.reportValidity()) {
-        let formData = new FormData(formElement);
-        let reponse = await DataProfile.add(formData);
-        V.renderLog(reponse);
-        formElement.reset();
-      }
-    };
-
-
-    C.start = async function () {
-      V.renderLog("Démarrage de l'application");
-      V.renderFormAdd(moviedata, "C.handlerAddMovie()");
-      V.renderProfileForm("C.handlerAddProfile()");
-    };
-
     window.V = {};
 
     V.renderLog = function (txt) {
-      let content = document.querySelector("#log");
-      content.innerHTML = Log.format(txt);
+        let content = document.querySelector("#log");
+        content.innerHTML = Log.format(txt);
     };
 
     V.renderFormAdd = function (data, handler) {
-      let content = document.querySelector("#formadd");
-      content.innerHTML = FormAdd.format(data, handler);
+        let content = document.querySelector("#formadd");
+        content.innerHTML = FormAdd.format(data, handler);
     };
 
-    V.renderProfileForm = function (handler) {
-      let content = document.querySelector("#profileadd");
-      content.innerHTML = ProfileForm.format(handler);
+    V.renderProfileForm = function (handler, profiles) {
+        let content = document.querySelector("#profileadd");
+        content.innerHTML = ProfileForm.format(handler, profiles);
+    };
+
+    C.handlerSelectProfile = function(id) {
+        let p = DataProfile.getById(id);
+        
+        if (p) {
+            document.querySelector('#p_nom').value = p.nom;
+            document.querySelector('#p_avatar').value = p.avatar;
+            document.querySelector('#p_age').value = p.age_restriction;
+        } else {
+            document.querySelector('#form_profile').reset();
+        }
+    };
+
+    C.handlerAddProfile = async function () {
+        let formElement = document.querySelector('#form_profile');
+
+        if (formElement.reportValidity()) {
+            let reponse = await DataProfile.add(new FormData(formElement));
+            V.renderLog(reponse);
+            C.start(); 
+        }
+    };
+
+    C.handlerAddMovie = async function () {
+        let formElement = document.querySelector('.addMovie__form');
+
+        if (formElement.reportValidity()) {
+            await DataMovie.add(new FormData(formElement));
+            V.renderLog("Film ajouté avec succès !");
+            formElement.reset();
+        }
+    };
+
+    C.start = async function () {
+        let moviedata = await DataMovie.requestCategories();
+        let profiles = await DataProfile.read(); 
+        
+        V.renderFormAdd(moviedata, "C.handlerAddMovie()");
+        V.renderProfileForm("C.handlerAddProfile()", profiles); 
     };
 
     C.start();
-  </script>
+</script>
 </body>
 
 </html>

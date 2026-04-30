@@ -1,11 +1,16 @@
 <section class="addProfile">
-    <h4>Ajouter un profil utilisateur</h4>
-    <form class="addProfile__form">
-        <input required type="text" name="nom" placeholder="Nom du profil">
+    <h4>Ajouter ou modifier un profil</h4>
+    <form class="addProfile__form" id="form_profile">
         
-        <input type="text" name="avatar" placeholder="Nom de l'avatar (ex: jean.png) - Facultatif">
+        <select name="id" onchange="C.handlerSelectProfile(this.value)">
+            <option value="">-- Nouveau profil --</option>
+            {{options}}
+        </select>
         
-        <select name="age">
+        <input required type="text" name="nom" id="p_nom" placeholder="Nom du profil">
+        <input type="text" name="avatar" id="p_avatar" placeholder="Avatar (ex: jean.png)">
+        
+        <select name="age" id="p_age">
             <option value="0">Tous publics</option>
             <option value="10">Déconseillé aux -10 ans</option>
             <option value="12">Interdit aux -12 ans</option>
@@ -13,6 +18,6 @@
             <option value="18">Interdit aux -18 ans</option>
         </select>
         
-        <button type="button" onclick="{{handler}}">Ajouter le profil</button>
+        <button type="button" onclick="{{handler}}">Enregistrer</button>
     </form>
 </section>

@@ -19,9 +19,7 @@ function getAllMovies($min_age){
     $stmt->execute();
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
     return $res; 
-}
-
-
+};
 
 function AddMovie($t, $r, $a, $d, $desc, $c,$n,$rest, $trail){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD); 
@@ -50,7 +48,7 @@ function getAllCategories() {
     $stmt = $cnx->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_OBJ);
-}
+};
 
 function getMovieDetail($id) {
 $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
@@ -66,17 +64,15 @@ $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
     return $stmt->fetch(PDO::FETCH_OBJ); 
 };
 
-function addProfile($nom, $avatar, $age) {
+function addProfile($id, $nom, $avatar, $age) {
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    
-    $sql = "INSERT INTO Profile (nom, avatar, age_restriction) 
-            VALUES (:nom, :avatar, :age)";
-            
+    $sql = "REPLACE INTO Profile (id, nom, avatar, age_restriction) 
+            VALUES (:id, :nom, :avatar, :age)";
     $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
     $stmt->bindParam(':nom', $nom);
     $stmt->bindParam(':avatar', $avatar);
     $stmt->bindParam(':age', $age);
-    
     $stmt->execute();
     return $stmt->rowCount(); 
 }
@@ -88,6 +84,8 @@ function getAllProfiles() {
     $stmt->execute();
     
     return $stmt->fetchAll(PDO::FETCH_OBJ);
-}
+};
+
+
 
 

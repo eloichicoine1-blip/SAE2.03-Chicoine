@@ -69,22 +69,18 @@ function readMovieDetailController() {
 };
 
 function addProfileController() {
-    if (empty($_REQUEST['nom'])) {
-        return ["status" => "error", "message" => "Le nom du profil est obligatoire."];
-    }
-
+    $id = empty($_REQUEST['id']) ? null : $_REQUEST['id']; 
     $nom = $_REQUEST['nom'];
-    $avatar = $_REQUEST['avatar'] ?? ""; 
+    $avatar = $_REQUEST['avatar']; 
     $age = $_REQUEST['age'];
 
-    $resultat = addProfile($nom, $avatar, $age);
+    $resultat = addProfile($id, $nom, $avatar, $age);
 
     if ($resultat != 0) {
-        return "Le profil a été ajouté avec succès.";
-    } else {
-        return false;
+        return "Le profil a été enregistré.";
     }
-};
+    return false;
+}
 
 function readProfilesController() {
     return getAllProfiles();
