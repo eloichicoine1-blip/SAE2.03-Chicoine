@@ -2,9 +2,9 @@
 
  
 define("HOST", "localhost");
-define("DBNAME", "chicoine3");
-define("DBLOGIN", "chicoine3");
-define("DBPWD", "chicoine3");
+define("DBNAME", "SAE203");
+define("DBLOGIN", "usersae203");
+define("DBPWD", "EloiPulse4321!");
 
 
 function getAllMovies($min_age){

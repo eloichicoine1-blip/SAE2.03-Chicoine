@@ -1,4 +1,4 @@
-let HOST_URL = "https://mmi.unilim.fr/~chicoine3/SAE2.03-Chicoine";
+let HOST_URL = ".";
 let DataProfile = {};
 
 DataProfile.read = async function (id = null) {
