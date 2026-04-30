@@ -3,7 +3,7 @@ let template = await templateFile.text();
 
 let MovieDetail = {};
 
-MovieDetail.format = function (movie) {
+MovieDetail.format = function (movie, favorites = []) {
     let html = template;
 
     
@@ -14,14 +14,29 @@ MovieDetail.format = function (movie) {
     html = html.replaceAll("{{categorie}}", movie.nom_categorie); 
     html = html.replaceAll("{{restrictionage}}", movie.min_age);
     html = html.replaceAll("{{description}}", movie.description);
+    html = html.replaceAll("{{trailer}}", movie.trailer);
 
+    let isFavorite = false; 
     
-    if (movie.trailer !== null && movie.trailer !== "") {
-        html = html.replaceAll("{{trailer}}", movie.trailer);
-    } else {
-        html = html.replaceAll("{{trailer}}", "about:blank"); 
+    for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i].id == movie.id) {
+            isFavorite = true; 
+        }
     }
 
+    let favoriteHandler = "";
+    let favoriteText = "";
+
+    if (isFavorite) {
+        favoriteHandler = "C.handlerRemoveFavorite('" + movie.id + "')";
+        favoriteText = "Enlever des favoris";
+    } else {
+        favoriteHandler = "C.handlerAddFavorite('" + movie.id + "')";
+        favoriteText = "Ajouter aux favoris";
+    }
+    
+    html = html.replaceAll("{{favoriteHandler}}", favoriteHandler);
+    html = html.replaceAll("{{favoriteText}}", favoriteText);
     return html;
 };
 

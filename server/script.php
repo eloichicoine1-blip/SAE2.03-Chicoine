@@ -30,9 +30,22 @@ if ( isset($_REQUEST['todo']) ){
         $data = addProfileController();
         break;
 
-        case 'readProfiles':
-        $data = readProfilesController();
-        break;
+    case 'readProfiles':
+    $data = readProfilesController();
+    break;
+
+    case 'readfavorites':
+      $data = readFavoritesController();
+      break;
+
+    case 'addfavorite':
+      $data = addFavoriteController();
+      break;
+
+    case 'removefavorite':
+      $data = removeFavoriteController();
+      break;
+
 
     default: 
       echo json_encode('[error] Unknown todo value');

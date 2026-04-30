@@ -15,13 +15,18 @@
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
       import { Movie } from "./component/Movie/script.js";
+      import { Favorite } from "./component/Favorite/script.js";
       import { DataMovie } from "./data/dataMovie.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
       import { DataProfile } from "./data/dataProfile.js";
+      import { DataFavorite } from "./data/dataFavorite.js";
 
       let profiles = await DataProfile.read();
       let currentFilteredMovies = null;
+      let currentProfileId = null;
+      let currentFavorites = null;
+      let content = document.querySelector("#content");
       content.innerHTML = "<h2 style='text-align:center; padding: 3rem;'>Veuillez sélectionner un profil pour découvrir le catalogue.</h2>";
       window.C = {};
 
@@ -33,29 +38,28 @@
 
       C.handlerDetail = async function (id) {
         let movie = await DataMovie.requestMovieDetails(id);
-        V.renderMovieDetail(movie);
+        V.renderMovieDetail(movie, currentFavorites);
       };
 
-     C.handlerSelectProfile = async function(idp) {
-        if (!idp) {
-            currentFilteredMovies = null; 
+      C.handlerSelectProfile = async function(id) {
+        if (!id) {
+            currentFilteredMovies = null;
+            currentProfileId = null;
+            currentFavorites = null;
             C.handlerHome(); 
         }
-        let currentProfile = null;
-        for (let p of profiles) {
-        if (p.id == idp) {
-            currentProfile = p; 
-        }
-      }
-      currentFilteredMovies = await DataMovie.requestMovies(currentProfile.age_restriction);
+        currentProfileId = id;
+        let currentProfile = DataProfile.getProfile(id, profiles);
+        currentFilteredMovies = await DataMovie.requestMovies(currentProfile.age_restriction);
+        currentFavorites = await DataFavorite.request(id);
         
-      V.renderMovie(currentFilteredMovies);
+        V.renderFavoritesAndMovies(currentFavorites, currentFilteredMovies);
       };
 
       C.handlerHome = function(){
         let content = document.querySelector("#content");
         if (currentFilteredMovies) {
-            V.renderMovie(currentFilteredMovies);
+            V.renderFavoritesAndMovies(currentFavorites, currentFilteredMovies);
         } 
         else {
             content.innerHTML = "<h2 style='text-align:center; padding: 3rem;'>Veuillez sélectionner un profil pour découvrir le catalogue.</h2>";
@@ -67,6 +71,20 @@
         
         C.handlerHome(); 
     };
+
+      C.handlerAddFavorite = async function(id_movie) {
+        await DataFavorite.add(currentProfileId, id_movie);
+        alert("Film ajouté aux favoris ");
+        currentFavorites = await DataFavorite.request(currentProfileId);
+        V.renderFavoritesAndMovies(currentFavorites, currentFilteredMovies);
+      };
+
+      C.handlerRemoveFavorite = async function(id_movie) {
+        await DataFavorite.remove(currentProfileId, id_movie);
+        alert("Film retiré des favoris ");
+        currentFavorites = await DataFavorite.request(currentProfileId);
+        V.renderFavoritesAndMovies(currentFavorites, currentFilteredMovies);
+      };
 
     C.start = async function () {
       V.renderNavBar("C.handlerHome()", profiles, "C.handlerLogout()");
@@ -81,17 +99,22 @@
 
     V.renderMovie = function (data) {
         let content = document.querySelector("#content");
-        let html = "";
-        for (let categoryObj of data) {
-            let moviesHtml = Movie.format(categoryObj.movies);
-            html += MovieCategory.format(categoryObj.label, moviesHtml);
-        }
-          content.innerHTML = html;
+        content.innerHTML = MovieCategory.format(data);
     };
 
-    V.renderMovieDetail = function (data) {
+          V.renderFavoritesAndMovies = function(favorites, groupedMovies) {
+          let content = document.querySelector("#content");
+          let html = MovieCategory.format(groupedMovies);
+          let favoritesHtml = Favorite.format(favorites);
+          if (favoritesHtml) {
+              html += favoritesHtml;
+          }
+          
+          content.innerHTML = html;
+      };
+    V.renderMovieDetail = function (data, favorites = []) {
         let content = document.querySelector("#content");
-        content.innerHTML = MovieDetail.format(data);
+        content.innerHTML = MovieDetail.format(data, favorites);
     };
 
     C.start();

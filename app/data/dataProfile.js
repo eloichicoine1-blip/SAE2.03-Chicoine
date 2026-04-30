@@ -13,4 +13,13 @@ DataProfile.read = async function (id = null) {
     return data;
 };
 
+DataProfile.getProfile = function(id, profiles) {
+    for (let p of profiles) {
+        if (p.id == id) {
+            return p;
+        }
+    }
+    return null;
+}
+
 export { DataProfile };
